@@ -1,21 +1,27 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
+import * as dotenv from "dotenv";
+import { DiscordClient } from "./app/client/discordClient/DiscordClient";
+import { Events, GatewayIntentBits } from "discord.js";
+import { deployCommands } from "./app/commands/deployCommands";
 
-import * as express from 'express';
-import * as path from 'path';
+dotenv.config();
 
-const app = express();
+// (async () => {
+// 	const data = await getYTvData("bones");
+// 	console.log(data);
+// })();
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to bot!' });
+const client = new DiscordClient({
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildVoiceStates,
+	],
 });
 
-const port = process.env.port || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
+client.once(Events.ClientReady, (c) => {
+	console.log(`Ready! Logged in as ${c.user.tag}`);
+	deployCommands();
 });
-server.on('error', console.error);
+
+client.login(process.env.DISCORD_TOKEN);

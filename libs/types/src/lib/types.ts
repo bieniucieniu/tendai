@@ -15,3 +15,8 @@ export interface Command {
 	data: SlashCommandBuilder;
 	execute: (interaction: UserContextMenuCommandInteraction) => Promise<void>;
 }
+
+export interface Command {
+	data: SlashCommandBuilder;
+	execute: (interaction: UserContextMenuCommandInteraction) => Promise<void>;
+}
