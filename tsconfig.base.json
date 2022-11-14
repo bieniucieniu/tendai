@@ -15,6 +15,7 @@
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
+			"@tendai/discord-client": ["libs/discord-client/src/index.ts"],
 			"@tendai/fnc": ["libs/fnc/src/index.ts"],
 			"@tendai/types": ["libs/types/src/index.ts"]
 		},
