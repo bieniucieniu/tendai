@@ -1,11 +1,9 @@
 import { DiscordClient } from "@tendai/discord-client";
 import {
 	ChatInputCommandInteraction,
-	EmbedBuilder,
 	GuildMember,
 	SlashCommandBuilder,
 } from "discord.js";
-import { format } from "date-fns";
 
 export const play = {
 	data: new SlashCommandBuilder()
@@ -25,45 +23,21 @@ export const play = {
 		const opt = interaction.options.getString("query");
 		const member = interaction.member as GuildMember;
 
-		await interaction.reply({ content: "loading...", ephemeral: true });
+		if (!member.voice.channel) {
+			interaction.reply({
+				content: "you are not in voice channel",
+				ephemeral: true,
+			});
+			return;
+		}
 
-		console.log("1st client.on");
+		await interaction.reply({ content: "loading...", ephemeral: true });
 
 		await client.disTube.play(member.voice.channel, opt, {
 			member: member,
 			textChannel: interaction.channel,
 		});
 
-		await (async () => {
-			const queue = client.disTube.getQueue(interaction);
-			const song = queue.songs[0];
-			const embed = new EmbedBuilder()
-				.setColor("Green")
-				.setTitle(`${song.name}`)
-				.setURL(song.url)
-				.setImage(song.thumbnail)
-				.setAuthor({
-					name: song.uploader.name,
-					url: song.uploader.url,
-				})
-				.addFields(
-					{
-						name: "views",
-						value: `${Intl.NumberFormat("en", { notation: "compact" }).format(
-							song.views
-						)}`,
-						inline: true,
-					},
-					{
-						name: "duration",
-						value: `${format(song.duration * 1000, "mm:ss")}	`,
-						inline: true,
-					}
-				);
-
-			await interaction.followUp({
-				embeds: [embed],
-			});
-		})();
+		await interaction.editReply({ content: "loaded" });
 	},
 };
