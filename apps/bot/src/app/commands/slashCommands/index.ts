@@ -5,8 +5,9 @@ import { pause } from "./pause";
 import { play } from "./play";
 import { skip } from "./skip";
 import { stop } from "./stop";
+import { leave } from "./leave";
 
-const commands = [play, pause, stop, skip, queue];
+const commands = [play, pause, stop, skip, queue, leave];
 
 const commandsCollection = new Collection<string, SlashCommand>();
 
