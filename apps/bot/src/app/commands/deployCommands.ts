@@ -3,21 +3,18 @@ import contextCommands from "./contextCommands";
 import { REST, Routes } from "discord.js";
 
 export const deployCommands = async () => {
-	const commands = [];
+	const scJson = slashCommands
+		.map((command) => command?.data.toJSON())
+		.filter((command) => command.name);
+	const ccJson = contextCommands
+		.map((command) => command?.data.toJSON())
+		.filter((command) => command.name);
 
-	const json = commands.map((command) => {
-		try {
-			return command.data.toJSON();
-		} catch (error) {
-			console.error(error);
-		}
-	});
-
-	console.log(json);
+	const json = scJson.concat(ccJson);
 
 	const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
 
-	console.log(`Deploying ${commands.length} commands...`);
+	console.log(`Deploying ${json.length} commands...`);
 
 	try {
 		const l = await rest.put(
