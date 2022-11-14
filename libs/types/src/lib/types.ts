@@ -1,7 +1,5 @@
-import {
-	SlashCommandBuilder,
-	UserContextMenuCommandInteraction,
-} from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { DiscordClient } from "@tendai/discord-client";
 
 export interface YTvData {
 	id: string;
@@ -11,12 +9,10 @@ export interface YTvData {
 	thumbnail?: URL;
 }
 
-export interface Command {
+export interface SlashCommand {
 	data: SlashCommandBuilder;
-	execute: (interaction: UserContextMenuCommandInteraction) => Promise<void>;
-}
-
-export interface Command {
-	data: SlashCommandBuilder;
-	execute: (interaction: UserContextMenuCommandInteraction) => Promise<void>;
+	execute: (
+		interaction: ChatInputCommandInteraction,
+		discordClient?: DiscordClient
+	) => Promise<void>;
 }
