@@ -1,6 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 
-export const getQueue = {
+export const queue = {
 	data: new SlashCommandBuilder()
 		.setName("queue")
 		.setDescription("Get the current queue"),
